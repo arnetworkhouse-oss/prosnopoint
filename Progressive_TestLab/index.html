@@ -947,7 +947,7 @@ function mathify(text) {
 </footer>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbwke0vprq7rWehSlKF9PWqymYtZdIKtYX5j-EXFl7GCs6VDNwEJkOkFer29zIBSpBM/exec";
+const API = "https://script.google.com/macros/s/AKfycbxQJt1Q9GsT7P1ccD0lcg5L6aMhnV4298B1GbHQgwB13yPq5TieTNZhPGabUsxrRrQ/exec";
 
 let examData, attemptId, timer, timeLeft;
 let currentQ = 0;
@@ -1138,7 +1138,11 @@ function startExam() {
       fetch(API, {
         method: "POST",
         body: JSON.stringify({ action: "startExam", name, whatsapp: wa, email, examName: data.examName })
-      }).then(r => r.json()).then(r => { attemptId = r.id; }).catch(() => {});
+      }).then(r => r.json()).then(r => {
+        attemptId = r.id;
+        // Record the live visit of Q1 now that we have an attempt ID.
+        trackVisit(0);
+      }).catch(() => {});
 
       examActive = true;
       setupExitGuard();
@@ -1197,6 +1201,7 @@ function updateDots() {
 function renderQuestion(idx) {
   currentQ = idx;
   visitedQuestions.add(idx);
+  trackVisit(idx);
   const q = examData.questions[idx];
   const total = examData.questions.length;
 
@@ -1257,6 +1262,19 @@ function renderQuestion(idx) {
 function selectOption(qIdx, letter) { answers[qIdx]=letter; renderQuestion(qIdx); }
 function clearOption(qIdx) { answers[qIdx]=''; renderQuestion(qIdx); }
 function goTo(idx) { if (idx>=0 && idx<examData.questions.length) renderQuestion(idx); }
+
+// ── LIVE TRACKER ──
+// Fires every time a question is opened/re-rendered so the Tracker sheet
+// updates in real time: marks the question column "Visited" and refreshes
+// the Last Conection timestamp. No answer letters are sent — this is a
+// separate, answer-free tracking sheet.
+function trackVisit(qIndex) {
+  if (!attemptId) return;
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({ action: "trackVisit", id: attemptId, qIndex: qIndex })
+  }).catch(()=>{});
+}
 
 // ── CONFIRM SUBMIT ──
 function confirmSubmit() {
