@@ -217,8 +217,12 @@
     background: rgba(0,0,0,.55);
     backdrop-filter: blur(3px);
     opacity: 0; transition: opacity .3s;
+    pointer-events: none;
   }
-  #drawer-backdrop.open { opacity: 1; }
+  #drawer-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   /* ── MAIN ── */
   #app {
@@ -899,6 +903,12 @@ async function loadTabs() {
     renderTabs(data.tabs);
     hide('loader');
     show('tab-section');
+    // On first load on mobile, the chapter list lives in the slide-over
+    // drawer (desktop tab-section is hidden on small screens), so open it
+    // automatically once so the user sees all topics right away.
+    if (isMobile()) {
+      openDrawer();
+    }
   } catch (err) {
     hide('loader');
     showError('Failed to load chapters: ' + err.message);
