@@ -518,9 +518,8 @@
     .brand-main { font-size: 1.05rem; }
     .hdr-badge { display: none; }
 
-    /* show hamburger, hide desktop tab section */
+    /* show hamburger for quick chapter switch; keep chapter list in main flow */
     #hamburger-btn { display: flex; }
-    #tab-section { display: none !important; }
     #mobile-drawer { display: block; }
     #drawer-backdrop { display: block; }
 
@@ -867,15 +866,11 @@ function closeDrawer() {
   document.body.style.overflow = '';
 }
 
-/* "← All Chapters" button:
-   - On desktop → same as old goBack()
-   - On mobile  → open the drawer instead */
+/* "← All Chapters" button: slides back to the chapter list (front section)
+   on both desktop and mobile. The hamburger drawer is just a quick-switch
+   shortcut, not the primary mobile chapter list anymore. */
 function handleBack() {
-  if (isMobile()) {
-    openDrawer();
-  } else {
-    goBack();
-  }
+  goBack();
 }
 
 /* ─── API ─── */
@@ -903,12 +898,6 @@ async function loadTabs() {
     renderTabs(data.tabs);
     hide('loader');
     show('tab-section');
-    // On first load on mobile, the chapter list lives in the slide-over
-    // drawer (desktop tab-section is hidden on small screens), so open it
-    // automatically once so the user sees all topics right away.
-    if (isMobile()) {
-      openDrawer();
-    }
   } catch (err) {
     hide('loader');
     showError('Failed to load chapters: ' + err.message);
@@ -972,6 +961,10 @@ async function loadPaper(tab, btnEl) {
 
   // show active dot on hamburger
   document.getElementById('hamburger-btn').classList.add('has-active');
+
+  // on mobile, front chapter list tucks away into the hamburger drawer
+  // once a chapter is opened; paper takes over the screen
+  if (isMobile()) hide('tab-section');
 
   hide('paper-section');
   show('paper-loader');
@@ -1067,6 +1060,7 @@ function buildCard(q, idx) {
 /* Desktop back (shows tab section again) */
 function goBack() {
   hide('paper-section');
+  show('tab-section');
   document.getElementById('tab-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
