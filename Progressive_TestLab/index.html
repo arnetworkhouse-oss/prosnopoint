@@ -965,7 +965,8 @@ const LETTERS = ['A','B','C','D'];
     .then(data => {
       // Exam name
       const el = document.getElementById('loginExamName');
-      el.textContent = (data && data.examName) ? data.examName : '—';
+      const examNameBlank = !data || !data.examName || String(data.examName).trim() === '';
+      el.textContent = examNameBlank ? '—' : data.examName;
 
       // Question Partner — update footer and brand dynamically
       if (data && data.questionPartner) {
@@ -973,12 +974,26 @@ const LETTERS = ['A','B','C','D'];
         document.getElementById('brandQuestionPartner').textContent = data.questionPartner;
       }
 
-      if (!data || !data.marksPerQ) return;
-
       const box      = document.getElementById('examInfoBox');
       const rows     = document.getElementById('examInfoRows');
       const title    = document.getElementById('examInfoTitle');
       const iconSvg  = document.getElementById('examInfoIcon');
+
+      // If no exam name is set (cell blank), show a notice instead of the marking scheme.
+      if (examNameBlank) {
+        title.textContent = 'Notice';
+        iconSvg.setAttribute('stroke', '#00e5ff');
+        rows.innerHTML = `
+          <div class="exam-info-row">
+            No exam is currently running.
+          </div>`;
+        box.classList.add('no-negative');
+        box.classList.remove('hidden');
+        return;
+      }
+
+      if (!data || !data.marksPerQ) return;
+
       const marksPerQ   = data.marksPerQ || 1;
       const hasNegative = data.hasNegative || false;
       const negMarks    = +(marksPerQ / 4).toFixed(2);
