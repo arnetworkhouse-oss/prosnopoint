@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Proshno Point Window 1</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <!-- MathJax for equation rendering (screen + print) -->
 <script>
@@ -158,49 +158,81 @@ function mathify(text) {
     .screen { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
     #login { justify-content: center; align-items: center; padding: 24px 20px; }
 
-    .brand { text-align: center; margin-bottom: 32px; }
+    /* ══ LOGIN — hero band (ink) + paper body ══ */
+    #login { justify-content: flex-start; padding: 0 0 40px; background: #f6f1e6; overflow-x: hidden; }
+    .login-hero {
+      width: 100%; position: relative; overflow: hidden;
+      background: radial-gradient(circle at 82% -10%, rgba(255,183,77,0.4), transparent 55%), radial-gradient(circle at 20% 110%, rgba(255,245,230,0.6), transparent 50%), #fdf6ec;
+      padding: 40px 20px 76px;
+      display: flex; flex-direction: column; align-items: center;
+      border-bottom-left-radius: 34px; border-bottom-right-radius: 34px;
+      box-shadow: 0 18px 36px rgba(180,140,80,0.2);
+    }
+    .brand { text-align: center; position: relative; z-index: 1; }
     .brand-icon {
-      width: 64px; height: 64px;
-      background: var(--primary);
-      border-radius: 16px; display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 16px; box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(150deg, #f59e0b, #b45309);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      box-shadow: 0 0 0 5px rgba(245,158,11,0.14), 0 12px 22px rgba(0,0,0,0.25);
     }
-    .brand-icon i { font-size: 28px; color: #fff; }
+    .brand-icon i { font-size: 26px; color: #fff; }
     .brand h1 {
-      font-size: 28px; font-weight: 700; letter-spacing: -0.5px;
-      color: var(--text);
+      font-family: 'Fraunces', serif; font-size: 33px; font-weight: 700;
+      letter-spacing: -0.01em; color: #422a0c; line-height: 1.1;
     }
-    .brand p { color: var(--muted); font-size: 14px; margin-top: 8px; line-height: 1.5; }
+    .brand h2 {
+      margin-top: 18px; display: inline-flex; flex-direction: column; align-items: center; gap: 5px;
+      max-width: 100%;
+    }
+    .brand h2 .collab-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #a1887f;
+    }
+    .brand h2 span#brandQuestionPartner { color: #8d6e63; font-weight: 700; font-size: 16px; }
 
-    .syllabus-btn-wrap { width: 100%; max-width: 400px; margin-bottom: 10px; display: flex; justify-content: center; }
+    .login-left { width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .login-right { width: 100%; max-width: 400px; margin: 22px auto 0; position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; padding: 0 20px 24px; }
+    .login-taglines { text-align: center; margin: 18px auto 16px; max-width: 400px; padding: 0 20px; }
+    .login-taglines p { color: #8b7d6b; font-size: 13.5px; line-height: 1.6; margin-bottom: 8px; }
+    .login-taglines p:last-child { margin-bottom: 0; }
+    .login-taglines p.warn-line { color: #92400e; font-weight: 600; }
+
+    .syllabus-btn-wrap { width: 100%; max-width: 400px; margin: 0 auto 14px; padding: 0 20px; display: flex; justify-content: center; }
     .btn-syllabus {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 9px 18px; border-radius: 100px;
-      background: var(--primary);
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 13px 26px; border-radius: 100px;
+      background: #d97706;
       border: none;
       color: #fff;
-      font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
+      font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700;
       cursor: pointer; text-decoration: none;
-      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(217,119,6,0.35);
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .btn-syllabus:hover { background: var(--primary-dark); color: #fff; }
+    .btn-syllabus:hover {
+      background: #f59e0b;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px 4px rgba(245,158,11,0.4);
+    }
     .btn-syllabus:active { transform: scale(0.97); }
 
     .exam-info-box {
-      width: 100%; max-width: 400px;
-      margin-bottom: 12px;
-      border-radius: var(--radius);
-      padding: 14px 16px;
+      width: 100%; margin-bottom: 18px;
+      padding: 14px 16px 16px;
+      border-radius: 12px;
       display: flex; align-items: flex-start; gap: 12px;
-      background: #fff7ed;
-      border: 2px solid #f59e0b;
+      background: #fdf1da;
+      position: relative;
     }
-    .exam-info-box.no-negative {
-      background: #eff6ff;
-      border-color: var(--primary);
+    .exam-info-box.no-negative { background: #e6eefb; }
+    .exam-info-icon {
+      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+      background: var(--warn); color: #fff; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
     }
-    .exam-info-icon { flex-shrink: 0; margin-top: 2px; color: var(--warn); font-size: 18px; }
-    .exam-info-box.no-negative .exam-info-icon { color: var(--primary); }
+    .exam-info-box.no-negative .exam-info-icon { background: var(--primary); }
     .exam-info-title {
       font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
       text-transform: uppercase; color: var(--warn); margin-bottom: 8px;
@@ -226,68 +258,95 @@ function mathify(text) {
     }
     .exam-info-box.hidden { display: none; }
 
-    /* ── TOAST ── */
-    #toastContainer {
-      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-      z-index: 10000; display: flex; flex-direction: column; gap: 8px;
-      width: calc(100% - 32px); max-width: 400px; pointer-events: none;
-    }
-    .toast {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 12px 14px; border-radius: 12px; color: #fff;
-      font-size: 13px; font-weight: 500; line-height: 1.45;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-      pointer-events: auto; animation: toastIn 0.28s ease;
-      border: none;
-    }
-    .toast.hide { animation: toastOut 0.25s ease forwards; }
-    .toast.toast-error { background: var(--red); }
-    .toast.toast-success { background: var(--green); }
-    .toast.toast-warn { background: var(--warn); color: #fff; }
-    .toast.toast-info { background: var(--primary); }
-    .toast-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
-    .toast-body { flex: 1; }
-    .toast-close {
-      background: transparent; border: none; color: inherit; opacity: 0.85;
-      cursor: pointer; font-size: 14px; padding: 0 2px; line-height: 1;
-    }
-    .toast-close:hover { opacity: 1; }
-    @keyframes toastIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-12px); } }
-
     .login-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 28px 24px; width: 100%; max-width: 400px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      background: #fffefb; border: 1px solid #ece3d2;
+      border-radius: 20px; padding: 30px 24px 26px; width: 100%;
+      box-shadow: 0 16px 40px rgba(23,17,10,0.1);
       display: flex; flex-direction: column; align-items: center; text-align: center;
+      position: relative;
     }
-    .exam-name-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .exam-name-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
     .exam-name-value {
-      font-size: 17px; font-weight: 700; color: var(--primary);
+      font-family: 'Fraunces', serif; font-size: 19px; font-weight: 700; color: #17110a;
       margin-bottom: 18px; min-height: 24px; display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .name-spinner { width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
-    .login-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 20px; color: var(--text); width: 100%; }
+    .name-spinner { width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--warn); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    .login-card h2 {
+      font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; margin-bottom: 4px; color: var(--text); width: 100%;
+    }
+    .login-card h2::after {
+      content: ''; display: block; width: 34px; height: 3px; background: var(--warn);
+      border-radius: 2px; margin: 10px auto 20px;
+    }
     .login-fields { width: 100%; text-align: left; }
     .field-group { margin-bottom: 14px; }
-    .field-label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: block; }
+    .field-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: block; }
     .text-input {
-      width: 100%; padding: 14px 16px;
-      background: var(--surface2); border: 1.5px solid var(--border);
-      border-radius: var(--radius); color: var(--text);
-      font-family: 'Sora', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%; padding: 13px 14px;
+      background: #fbf8f2; border: 1.5px solid #e5dcc8;
+      border-radius: 10px; color: var(--text);
+      font-family: 'Sora', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     }
-    .text-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2); }
+    .text-input:focus { border-color: var(--warn); background: #fff; box-shadow: 0 0 0 3px rgba(217,119,6,0.15); }
     .btn-primary {
-      width: 100%; padding: 15px; margin-top: 6px;
-      background: var(--primary);
-      color: #fff; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 600;
-      border: none; border-radius: var(--radius); cursor: pointer; transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      width: 100%; padding: 15px; margin-top: 8px;
+      background: #17110a;
+      color: #fbf5ea; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 600;
+      border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 6px 16px rgba(23,17,10,0.25);
     }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
-    .btn-primary:not(:disabled):hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+    .btn-primary:not(:disabled):hover { background: #2b2013; transform: translateY(-1px); }
     .btn-primary:not(:disabled):active { transform: scale(0.98); }
+
+    /* ══ DESKTOP: logo + syllabus on left, login card on right ══ */
+    @media (min-width: 900px) {
+      #login { flex-direction: row; align-items: stretch; padding: 0; height: 100vh; overflow: hidden; }
+      .login-left {
+        flex: 0 0 56%; max-width: 720px;
+        background: radial-gradient(circle at 82% -10%, rgba(255,183,77,0.4), transparent 55%), radial-gradient(circle at 20% 110%, rgba(255,245,230,0.6), transparent 50%), #fdf6ec;
+        justify-content: center; align-items: center;
+        padding: 32px 44px; position: relative; overflow-y: auto;
+        border-radius: 0; box-shadow: none;
+      }
+      .login-hero {
+        width: auto; background: transparent; box-shadow: none; padding: 0;
+        border-radius: 0; margin-bottom: 8px;
+      }
+      .login-taglines { max-width: 340px; padding: 0; margin: 20px 0 24px; position: relative; z-index: 1; }
+      .login-taglines p { color: rgba(251,245,234,0.55); }
+      .login-taglines p.warn-line { color: #fbbf24; }
+      .syllabus-btn-wrap { max-width: 400px; padding: 0; margin: 0; position: relative; z-index: 1; }
+      .btn-syllabus { padding: 15px 30px; font-size: 15px; }
+
+      .login-right {
+        flex: 1; max-width: none; margin: 0; padding: 36px 48px;
+        justify-content: center; background: #fffaf0; overflow-y: auto;
+      }
+      .exam-info-box, .login-card { width: 100%; max-width: 380px; }
+
+      /* tighten vertical rhythm so the whole screen fits one viewport */
+      .brand-icon { width: 66px; height: 66px; margin-bottom: 22px; }
+      .brand-icon i { font-size: 26px; }
+      .brand h1 { font-size: 36px; margin-bottom: 2px; }
+      .brand h2 { margin-top: 16px; }
+      .login-taglines { margin: 26px 0 30px; max-width: 380px; }
+      .login-taglines p { font-size: 14.5px; line-height: 1.65; margin-bottom: 10px; }
+      .exam-info-box { padding: 11px 13px 12px; margin-bottom: 14px; }
+      .exam-info-icon { width: 26px; height: 26px; font-size: 12px; }
+      .exam-info-title { margin-bottom: 5px; }
+      .exam-info-rows { gap: 4px; }
+      .exam-info-row { font-size: 12.5px; }
+      .exam-info-warn-note { margin-top: 7px; padding: 6px 9px; font-size: 11.5px; }
+      .login-card { padding: 22px 22px 20px; border-radius: 16px; }
+      .exam-name-value { margin-bottom: 12px; font-size: 17px; }
+      .login-card h2 { font-size: 18px; margin-bottom: 2px; }
+      .login-card h2::after { margin: 7px auto 14px; }
+      .field-group { margin-bottom: 10px; }
+      .field-label { margin-bottom: 5px; }
+      .text-input { padding: 10px 13px; font-size: 14px; }
+      .btn-primary { padding: 12px; margin-top: 4px; font-size: 14px; }
+    }
     .error-msg { display: none !important; }
 
     .exam-header {
@@ -597,11 +656,83 @@ function mathify(text) {
     .review-option mjx-container { color: inherit; }
 
     .hidden { display: none !important; }
+
+    #toastContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .toast {
+      min-width: 280px;
+      max-width: 320px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      animation: toast-in 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      border-left-width: 4px;
+    }
+    @keyframes toast-in {
+      from { transform: translateX(110%); }
+      to { transform: translateX(0); }
+    }
+    .toast.hide {
+      animation: toast-out 0.4s ease-in forwards;
+    }
+    @keyframes toast-out {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(110%); opacity: 0; }
+    }
+    .toast-icon {
+      flex-shrink: 0;
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+      padding-top: 2px;
+    }
+    .toast-body {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .toast-close {
+      flex-shrink: 0;
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .toast-close:hover { opacity: 1; }
+
+    .toast-info .toast-icon { color: var(--primary); }
+    .toast-success .toast-icon { color: var(--green); }
+    .toast-warn .toast-icon { color: var(--warn); }
+    .toast-error .toast-icon { color: var(--red); }
+
+    .toast.toast-info { border-left-color: var(--primary); }
+    .toast.toast-success { border-left-color: var(--green); }
+    .toast.toast-warn { border-left-color: var(--warn); }
+    .toast.toast-error { border-left-color: var(--red); }
   </style>
 </head>
 <body data-qpartner="" data-dpartner="AR Network House">
 
-<!-- TOAST CONTAINER -->
 <div id="toastContainer"></div>
 
 <!-- SCREENSHOT OVERLAY -->
@@ -618,16 +749,21 @@ function mathify(text) {
 
 <!-- LOGIN -->
 <div id="login" class="screen" style="display:flex;">
-  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px 20px;">
-    <div class="brand">
-      <div class="brand-icon">
-        <i class="fa-solid fa-clipboard-list"></i>
+  <div class="login-left">
+    <div class="login-hero">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </div>
+        <h1>Proshno Point</h1>
+        <h2><span class="collab-label">AR Network House </span><span><strong>X</strong></span><span id="brandQuestionPartner">Center Name</span></h2>
       </div>
-      <h1>Proshno Point</h1>
-      <h2>AR Network House — Digital Partner &amp; Question Partner: <span id="brandQuestionPartner">Center Name</span></h2>
+    </div>
+
+    <div class="login-taglines">
       <p>Practice COMPETITIVE EXAMS MODULES.</p>
-      <p style="margin-top:8px;">Any attempt of cheating or unfair means will lead to immediate disqualification.</p>
-      <p style="margin-top:8px;">Practice makes you perfect. Good luck!</p>
+      <p class="warn-line">Any attempt of cheating or unfair means will lead to immediate disqualification.</p>
+      <p>Practice makes you perfect. Good luck!</p>
     </div>
 
     <!-- SYLLABUS BUTTON -->
@@ -638,7 +774,9 @@ function mathify(text) {
         <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px"></i>
       </a>
     </div>
+  </div>
 
+  <div class="login-right">
     <!-- EXAM INFO BOX -->
     <div class="exam-info-box hidden" id="examInfoBox">
       <div class="exam-info-icon" id="examInfoIcon">
@@ -804,6 +942,32 @@ function showToast(message, type = 'info', duration = 4000) {
   }, duration);
 }
 
+// ── TOAST NOTIFICATIONS ──
+function showToast(message, type = 'info', duration = 4000) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+
+  const iconClass = {
+    info: 'fa-solid fa-circle-info',
+    success: 'fa-solid fa-check-circle',
+    warn: 'fa-solid fa-triangle-exclamation',
+    error: 'fa-solid fa-circle-xmark',
+  }[type];
+
+  toast.innerHTML = `
+    <i class="toast-icon ${iconClass}"></i>
+    <div class="toast-body">${message}</div>
+    <button class="toast-close" onclick="this.parentElement.classList.add('hide')">&times;</button>
+  `;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('hide');
+    toast.addEventListener('animationend', () => toast.remove());
+  }, duration);
+}
+
 // ── FETCH EXAM NAME + INFO BOX + QUESTION PARTNER ──
 (function() {
   fetch(API + "?action=getQuestions")
@@ -923,8 +1087,6 @@ function showScreen(id) {
   ['login','loading','exam','result'].forEach(s => document.getElementById(s).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
-function showError(msg) { showToast(msg, 'error'); }
-function hideError() { /* Now handled by toast timeout */ }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 // ── EXIT GUARD ──
@@ -960,20 +1122,29 @@ function startExam() {
   const name  = document.getElementById("nameInput").value.trim();
   const wa    = document.getElementById("waInput").value.trim().replace(/\s/g,'');
   const email = document.getElementById("emailInput").value.trim();
-  hideError();
 
-  if (!name)                      { showError("Please enter your full name."); return; }
-  if (!wa || !validateWA(wa))     { showError("Enter a valid 10-digit WhatsApp number."); return; }
-  if (!email||!validateEmail(email)){ showError("Enter a valid email address."); return; }
+  const errors = [];
+  if (!name)                      errors.push("Please enter your full name.");
+  if (!wa || !validateWA(wa))     errors.push("Enter a valid 10-digit WhatsApp number.");
+  if (!email || !validateEmail(email)) errors.push("Enter a valid email address.");
+
+  if (errors.length) {
+    errors.forEach(e => showToast(e, 'error'));
+    return;
+  }
 
   const btn = document.getElementById("beginBtn");
-  btn.disabled = true; btn.textContent = "Loading...";
+  btn.disabled = true; btn.innerHTML = `<span class="name-spinner" style="border-top-color: #fff; margin: auto;"></span>`;
   showScreen('loading');
   document.getElementById("loadingMsg").textContent = "Fetching exam questions...";
 
   fetch(API + "?action=getQuestions")
     .then(res => { if (!res.ok) throw new Error("Server error " + res.status); return res.json(); })
     .then(data => {
+      const examNameBlank = !data || !data.examName || String(data.examName).trim() === '';
+      if (examNameBlank) {
+        throw new Error("No exam is currently running.");
+      }
       if (data.error) throw new Error(data.error);
       if (!data.questions || data.questions.length === 0) throw new Error("No questions found.");
 
@@ -1012,9 +1183,9 @@ function startExam() {
       showScreen('exam');
     })
     .catch(err => {
-      btn.disabled = false; btn.textContent = "Begin Exam";
+      btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-play"></i> Begin Exam`;
       showScreen('login');
-      showError("Could not load exam: " + err.message);
+      showToast("Could not load exam: " + err.message, 'error');
     });
 }
 
