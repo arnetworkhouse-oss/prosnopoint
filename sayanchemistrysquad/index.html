@@ -18,6 +18,7 @@
   };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script>
 // ── PLAIN TEXT → LaTeX MATH CONVERTER ──
 function toMath(text) {
@@ -531,8 +532,13 @@ function mathify(text) {
     @media print {
       /* Print styles remain largely the same, just ensuring colors and layout are print-friendly */
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-      body { background: #fff !important; color: #111 !important; font-size: 12px !important; }
-      body::before, body::after, .screenshot-overlay, .img-lightbox, .modal-overlay, #login, #loading, #exam { display: none !important; }
+      body { background: #fff !important; color: #111 !important; font-size: 12px !important; position: relative; }
+      .screenshot-overlay, .img-lightbox, .modal-overlay, #login, #loading, #exam { display: none !important; }
+
+      /* Watermark */
+      /* diagonal hatch texture removed — text-only watermark below */
+      /* tiled MS-Word-style watermark: injected dynamically by applyPdfWatermark() as body::before */
+
       .exam-footer { position: static !important; display: flex !important; border-top: 1px solid #ddd !important; background: #f8fafc !important; backdrop-filter: none !important; padding: 6px 12px !important; margin-top: 16px !important; font-size: 10px !important; }
       .footer-left, .footer-right { color: #64748b !important; }
       .footer-left strong { color: #334155 !important; }
@@ -593,7 +599,7 @@ function mathify(text) {
     .hidden { display: none !important; }
   </style>
 </head>
-<body>
+<body data-qpartner="" data-dpartner="AR Network House">
 
 <!-- TOAST CONTAINER -->
 <div id="toastContainer"></div>
@@ -1203,11 +1209,16 @@ function buildResultDashboard(name, score, totalMarks, correct, wrong, skipped, 
     ? `+${marksPerQ} correct, −${(marksPerQ/4).toFixed(2)} wrong (negative marking on)`
     : `+${marksPerQ} per correct answer (no negative marking)`;
 
+  // Set watermark data attributes for PDF
+  const qPartner = document.getElementById('brandQuestionPartner').textContent;
+  document.body.setAttribute('data-qpartner', qPartner);
+  document.body.setAttribute('data-dpartner', 'AR Network House');
+
   let html=`
     <div class="score-card">
       <div class="score-name">${name}'s Result — ${examData.examName}</div>
       <div class="score-big">${score % 1===0 ? score : score.toFixed(2)}</div>
-      <div class="score-denom">/ ${totalMarks}</div>
+      <div class="score-denom">out of ${totalMarks}</div>
       <div class="score-pct">${pct}% correct</div>
       <div class="score-marking-note">${markingNote}</div>
     </div>
@@ -1277,13 +1288,68 @@ function buildResultDashboard(name, score, totalMarks, correct, wrong, skipped, 
   showScreen('result');
   document.querySelector('.exam-footer').classList.remove('footer-hidden');
 
+  // Celebration for perfect score
+  if (pct >= 90) {
+    setTimeout(() => {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 120,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#2563eb', '#16a34a', '#f59e0b', '#dc2626']
+        });
+      }
+    }, 400);
+  }
+
   if (window.MathJax && MathJax.typesetPromise) {
     MathJax.typesetPromise([document.getElementById('resultBody')]).catch(()=>{});
   }
 }
 
+// ── PDF WATERMARK (tiled, MS-Word style, repeats on every printed page) ──
+function escXml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function buildWatermarkTile(qPartner, dPartner) {
+  const l1 = escXml(`Question Partner: ${qPartner}`);
+  const l2 = escXml(`Digital Partner: ${dPartner}`);
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='480' height='260'>
+    <g transform='rotate(-30 240 130)' font-family='Sora,Arial,sans-serif' font-weight='700' font-size='15' fill='rgba(0,0,0,0.09)' text-anchor='middle'>
+      <text x='240' y='115'>${l1}</text>
+      <text x='240' y='140'>${l2}</text>
+    </g>
+  </svg>`;
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
+function applyPdfWatermark() {
+  const qPartner = document.body.getAttribute('data-qpartner') ||
+                    document.getElementById('footerQuestionPartner')?.textContent || 'Center Name';
+  const dPartner = document.body.getAttribute('data-dpartner') || 'AR Network House';
+  const tile = buildWatermarkTile(qPartner, dPartner);
+  let styleEl = document.getElementById('pdfWatermarkStyle');
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'pdfWatermarkStyle';
+    document.head.appendChild(styleEl);
+  }
+  styleEl.textContent = `@media print {
+    body::before {
+      display: block !important;
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("${tile}");
+      background-repeat: repeat;
+      z-index: 9998;
+      pointer-events: none;
+    }
+  }`;
+}
+
 // ── PDF DOWNLOAD ──
 function downloadPDF() {
+  applyPdfWatermark();
   if (window.MathJax && MathJax.typesetPromise) {
     MathJax.typesetPromise([document.getElementById('resultBody')])
       .then(() => { window.print(); })
